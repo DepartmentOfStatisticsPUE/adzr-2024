@@ -6,4 +6,4 @@ Materiały na zajęcia
 
 Dodatkowe ćwiczenia
 
-1. [Ćwiczenia 1](https://htmlpreview.github.io/?https://raw.githubusercontent.com/DepartmentOfStatisticsPUE/adzr-2024/main/exercises/exercises-1.html)
+1. [Ćwiczenia #1](https://htmlpreview.github.io/?https://raw.githubusercontent.com/DepartmentOfStatisticsPUE/adzr-2024/main/exercises/exercises-1.html)
