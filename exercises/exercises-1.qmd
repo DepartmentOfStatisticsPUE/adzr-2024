@@ -1,0 +1,29 @@
+---
+title: "Ćwiczenie #1"
+format: 
+  html:
+    self-contained: true
+editor: visual
+---
+
+**Ćwiczenie** 1. Utwórz wektor następujących liczb: `2, 6, 8, 6, 4, 3`.
+
+**Ćwiczenie** 2. Utwórz wektor kolejnych liczb całkowitych od 1 do 100.
+
+**Ćwiczenie** 3. Utwórz wektor kolejnych parzystych liczb całkowitych od 2 do 100.
+
+**Ćwiczenie** 4. Utwórz wektor złożony z kolejnych nieparzystych liczb postaci: `99, 95, 91, 87, ..., 47`.
+
+**Ćwiczenie** 5. Wygeneruj wektor złożony z kolejnych liczb parzystych `2, 4, ..., 20`. Wektor ten nie powinien zawierać liczb 6 i 10. Innymi słowy wygeneruj wektor `2, 4, 8, 12, 14, 16, 18, 20`.
+
+**Ćwiczenie** 6. Zapisz w postaci wektora wiek 10 osób:`25, 35, 43, 28, 47, 77, 55, 66, 25, 25`. Dla tak utworzonego wektora oblicz następujące statystyki opisowe: minimum, maksimum, średnia, odchylenie standardowe, rozstęp, kwartyle, kurtoza, skośność (asymetria).
+
+** Ćwiczenie** 7. Utwórz wektor `a` z liczbami od 100 do 103 i wektor `b` z liczbami od 4 do 7. Utwórz nowy wektor `d` będący kombinacją wektorów b i a (w tej kolejności). Wyświetl go.
+
+**Ćwiczenie** 8. Utwórz wektor: `1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3`. 
+
+**Ćwiczenie** 9. Utwórz wektor zawierający twoje imię 100 razy. 
+
+**Ćwiczenie** 10. Utwórz wektor o nazwie `w1`, który będzie zawierał następujące wartości $(2, 2^2, 2^3, ..., 2^{10})$.
+
+**Ćwiczenie** 11. Utwórz wektor o następujących wartościach (`a1_1, `a1_2, `a3_3, ... , `a10_10`) \[podpowiedź: funkcja `wklej`].
