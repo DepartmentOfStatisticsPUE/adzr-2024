@@ -1,6 +1,10 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "Zajęcia #1"
+author: "Maciej Beręsewicz"
+output: 
+  html_notebook:
+    self-containing: yes
+    toc: yes
 ---
 
 Wstawiam fragment kodu używając skrótu ctrl+alt+i

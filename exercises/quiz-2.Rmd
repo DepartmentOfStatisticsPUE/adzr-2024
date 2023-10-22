@@ -1,0 +1,36 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Proszę wczytać plik rent_poznan.xlsx i odpowiedzieć na następujące pytania. Proszę użyć funkcji `as.data.frame` aby uzyskany obiekt był klasy `data.frame`.
+
+```{r}
+rent <- read_excel(path = "../data-raw/rent-poznan.xlsx")
+rent <- as.data.frame(rent)
+head(rent)
+```
+
+1. Ile ogłoszeń zostało umieszczonych przez osoby indywidualne (individual)? / 4912
+
+```{r}
+rent |> subset(individual == TRUE) |> nrow()
+```
+
+2. Ile ogłoszeń dotyczyło mieszkań 1-pokojowych (flat_rooms) o cenie (price) większej lub równej 3000 zł / 2
+
+```{r}
+rent |> subset(flat_rooms == 1 & price >= 3000) |> nrow()
+```
+3. Ile ogłoszeń dotyczyło mieszkań dla studentów (flat_for_students) z osiedla Żegrze lub Strzeszyn (quarter)? 23
+
+```{r}
+rent |> subset(flat_for_students == TRUE & quarter %in% c("Żegrze", "Strzeszyn")) |> nrow()
+```
+
+4. Ile ogłoszeń dotyczyło mieszkań umeblownych (flat_furnished) z ceną poniżej (<) 500 lub powyżej (>) 5000 zł? / 50
+
+```{r}
+rent |> subset(flat_furnished == TRUE & (price < 500 | price > 5000)) |> NROW()
+```
+
