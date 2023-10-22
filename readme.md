@@ -8,3 +8,4 @@ Materiały na zajęcia
 Dodatkowe ćwiczenia
 
 1. [Ćwiczenia #1](https://htmlpreview.github.io/?https://raw.githubusercontent.com/DepartmentOfStatisticsPUE/adzr-2024/main/exercises/exercises-1.html)
+1. [Ćwiczenia #2](https://htmlpreview.github.io/?https://raw.githubusercontent.com/DepartmentOfStatisticsPUE/adzr-2024/main/exercises/exercises-2.html) [zbiór danych `gospodarstwa.xlsx` znajduje się w folderze `exercises`]

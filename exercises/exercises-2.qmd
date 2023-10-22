@@ -1,0 +1,133 @@
+---
+title: "Wizualizacja danych z pakietem ggplot2"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    self-contained: true
+editor: visual
+---
+
+### Zadanie 1. Zaimportuj plik gospodarstwa.xlsx.
+
+### Zadanie 2. Stwórz korelacyjny diagram rozrzutu dla zmiennej dochg i wydg. Weź pod uwagę tylko gospodarstwa o dodatnich dochodach i wydatkach.
+
+### Zadanie 3. Diagram rozrzutu utworzony w zadaniu 2 przedstaw na różny sposób używając w tym celu wbudowanych w pakiecie ggplot2 stylów tematycznych.
+
+### Zadanie 4. Stwórz korelacyjny diagram rozrzutu między dochodami a wydatkami w ramach każdej z klas miejscowości.
+
+### Zadanie 5. Stwórz wykres typu box-plot dla zmiennej dochg w ramach każdej klasy miejscowości.
+
+### Zadanie 6. Stwórz wykres typu box-plot dla zmiennej dochg w ramach klasy miejscowości oraz uwzględniając warianty zmiennej d61 (sytuacja materialna gospodarstwa).
+
+### Zadanie 7. Stwórz korelacyjny diagram rozrzutu między dochodami a wydatkami a następnie dodaj histogram każdej zmiennej. Podobnie uczyń kolejno z dodaniem wykresów typu box-plot.
+
+### Zadanie 8. Stwórz wykres słupkowy z liczebnościami dla zmiennej klm.
+
+### Zadanie 9. Stwórz wykres typu box-plot dla zmiennej wydg dla każdej klasy miejscowości. Zmień orientację wyświetlania boxplotów.
+
+### Zadanie 10. Stwórz histogram dla zmiennej wydg.
+
+### Zadanie 11. Stwórz wykres panelowy ukazujący histogramy zmiennej wydg w ramach każdej z klasy miejscowości i wariantu zmiennej d61.
+
+### Zadanie 12. Stwórz wykres ukazujący min, max i średnie dochody gospodarstw w zależności od ich sytuacji materialnej.
+
+### Zadanie 13. Stwórz wykres (słupkowy) obrazujący średnie dochody gospodarstw w zależności od ich sytuacji materialnej.
+
+### Zadanie 14. Stwórz wykres (punktowy) ze średnimi wydatkami w zależności od klasy miejscowości.
+
+### Zadanie 15. Stwórz wykres obrazujący funkcje gęstości dla dochodów gospodarstw domowych w zależności od ich sytuacji materialnej.
+
+### 
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+\
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+
+### 
+
+				
+			
+		
+
+	
+
+				
+			
+		
+
+	
+
+### 
+		
+
+	
