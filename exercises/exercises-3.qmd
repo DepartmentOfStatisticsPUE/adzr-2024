@@ -1,0 +1,566 @@
+---
+title: "Rozwiazania zadań z pliku"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    self-contained: true
+editor: visual
+---
+
+Pakiety
+
+```{r}
+library(readxl)
+library(tidyverse)
+```
+
+#### Zadanie 1. Zaimportuj plik gospodarstwa.xlsx. Zapisz go pod nazwą
+
+„dane". Następnie wszystkie zadania rozwiąż korzystając z pakietu dplyr.
+
+```{r}
+dane <- read_excel("gospodarstwa.xlsx")
+```
+
+#### Zadanie 2. Utwórz zbiór, w którym są gospodarstwa ze wsi.
+
+::: panel-tabset
+## base R
+
+```{r}
+subset(dane, klm == 6)
+```
+
+## dplyr
+
+```{r}
+filter(dane, klm == 6)
+```
+:::
+
+#### Zadanie 3. Utwórz zbiór, w którym są gospodarstwa o dochodach \> 2000 zł.
+
+::: panel-tabset
+## base R
+
+```{r}
+subset(dane, dochg > 2000)
+```
+
+## dplyr
+
+```{r}
+filter(dane, dochg > 2000)
+```
+:::
+
+#### Zadanie 4. Utwórz zbiór, który zawiera gospodarstwa z województwa wielkopolskiego oraz które zamieszkują wieś i mają dochody powyżej 3000 zł.
+
+::: panel-tabset
+## base r
+
+```{r}
+subset(dane, woj == "30" & klm == 6 & dochg > 3000)
+```
+
+## dplyr
+
+```{r}
+filter(dane, woj == "30", klm == 6, dochg > 3000)
+```
+:::
+
+#### Zadanie 5. Wybierz gospodarstwa domowe z województwa dolnośląskiego i mazowieckiego z miast powyżej 500 tys. mieszkańców.
+
+::: panel-tabset
+## base R
+
+```{r}
+subset(dane, woj %in% c("02", "14") & klm == 1)
+```
+
+## dplyr
+
+```{r}
+filter(dane, woj %in% c("02", "14"), klm == 1)
+```
+:::
+
+#### Zadanie 6. Losowo wybierz zbiór 30% gospodarstw domowych.
+
+::: panel-tabset
+## base R
+
+```{r}
+set.seed(123)
+n_size <- round(0.3*nrow(dane))
+dane[sample(1:nrow(dane), n_size),]
+```
+
+## dplyr
+
+```{r}
+set.seed(123)
+sample_frac(dane, 0.3)
+```
+:::
+
+#### Zadanie 7. Losowo wybierz 100 gospodarstw.
+
+::: panel-tabset
+## base R
+
+```{r}
+
+```
+
+## dplyr
+
+```{r}
+
+```
+:::
+
+#### Zadanie 8. Wybierz gospodarstwa domowe z wierszy 10--15.
+
+::: panel-tabset
+## base R
+
+```{r}
+set.seed(123)
+dane[sample(1:nrow(dane), 100),]
+```
+
+## dplyr
+
+```{r}
+set.seed(123)
+sample_n(dane,100)
+```
+:::
+
+#### Zadanie 9. Wybierz gospodarstwa domowe z danymi tylko dla kolumny woj i wydg ale w odniesieniu jedynie dla gospodarstw z województwa wielkopolskiego.
+
+::: panel-tabset
+## base R
+
+```{r}
+subset(dane, 
+       subset = woj == "30", 
+       select = c(woj, wydg))
+```
+
+## dplyr
+
+```{r}
+dane |> 
+  filter(woj == "30") |> 
+  select(woj, wydg)
+```
+:::
+
+#### Zadanie 10. Wybierz wszystkie gospodarstwa, których dochód jest z przedziału 3000--4000 i zostaw tylko tą zmienną w zbiorze.
+
+::: panel-tabset
+## base R
+
+```{r}
+subset(dane, 
+       subset = dochg >= 3000 & dochg <= 4000,
+       select = c("dochg"))
+```
+
+## dplyr
+
+```{r}
+dane |> 
+  filter(between(dochg, 3000, 4000)) |> 
+  select(dochg)
+```
+:::
+
+#### Zadanie 11. Wybierz wszystkie kolumny od klm do zut włącznie.
+
+::: panel-tabset
+## base R
+
+```{r}
+start <- which(names(dane) == "klm")
+end <- which(names(dane) == "zut")
+dane[, start:end]
+```
+
+## dplyr
+
+```{r}
+select(dane, klm:zut)
+```
+:::
+
+#### Zadanie 12. Wyświetl nazwy wszystkich zmiennych w zbiorze gospodarstwa.
+
+::: panel-tabset
+## base R
+
+```{r}
+names(dane)
+```
+
+## dplyr
+
+Nie ma oddzielnej funkcji do nazw. Należy skorzystać z funkcji
+`names()`.
+:::
+
+#### Zadanie 13. Wybierz wszystkie kolumny, które zaczynają się na literę d.
+
+::: panel-tabset
+## base R
+
+```{r}
+dane[,grepl("^d", names(dane))]
+```
+
+## dplyr
+
+```{r}
+dane |> 
+  select(starts_with("d"))
+```
+:::
+
+#### Zadanie 14. Utwórz nową zmienną różnica=dochg-wydg. Pozostaw w zbiorze zmienne dochg, wydg i różnica.
+
+::: panel-tabset
+## base R
+
+```{r}
+dane |> 
+  transform(roznica = dochg - wydg) |> 
+  subset(select = c("dochg", "wydg", "roznica"))
+```
+
+## dplyr
+
+```{r}
+dane |> 
+  mutate(roznica = dochg - wydg) |> 
+  select(dochg, wydg, roznica)
+```
+:::
+
+#### Zadanie 15. Utwórz nowe zmienne x=ln(dochg) oraz y=ln(wydg). Pamiętaj, że ln liczymy dla dodatnich wartości.
+
+::: panel-tabset
+## base R
+
+```{r}
+dane <- transform(dane, 
+                  x = log(dochg),
+                  y = log(wydg))
+```
+
+## dplyr
+
+```{r}
+dane <- mutate(dane, 
+                  x = log(dochg),
+                  y = log(wydg))
+```
+:::
+
+#### Zadanie 16. Dokonaj zamiany nazwy zmiennych dochg na dochód oraz wydg na wydatki.
+
+::: panel-tabset
+## base R
+
+```{r}
+names(dane)[which(names(dane) == "dochg")] <- "dochod"
+names(dane)[which(names(dane) == "wydg")] <- "wydatki"
+```
+
+## dplyr
+
+```{r, eval = F}
+dane <- dane |> rename(dochod = dochg, wydatki = wydg)
+```
+:::
+
+#### Zadanie 17. Oblicz ile było gospodarstw domowych ze względu na poszczególne warianty zmiennej klm.
+
+::: panel-tabset
+## base R
+
+```{r}
+table(dane$klm)
+```
+
+## dplyr
+
+```{r}
+dane |> 
+  count(klm)
+```
+:::
+
+#### Zadanie 18. Oblicz ile było gospodarstw domowych w poszczególnych województwach.
+
+::: panel-tabset
+## base R
+
+```{r}
+table(dane$woj)
+```
+
+## dplyr
+
+```{r}
+dane |> count(woj)
+```
+:::
+
+#### Zadanie 19. Oblicz ile było gospodarstw domowych w poszczególnych województwach że względu na warianty zmiennej d61 (Sytuacja materialna gospodarstwa).
+
+::: panel-tabset
+## base R
+
+```{r}
+xtabs(~d61 + woj, dane)
+```
+
+## dplyr
+
+```{r}
+dane |> count(d61, woj)
+```
+:::
+
+#### Zadanie 20. Oblicz średnie wydatki wszystkich gospodarstw domowych.
+
+::: panel-tabset
+## base R
+
+```{r}
+mean(dane$wydatki, na.rm=T)
+```
+
+## dplyr
+
+```{r}
+dane |> summarise(wyd = mean(wydatki, na.rm=T))
+```
+:::
+
+#### Zadanie 21. Oblicz średnie wydatki i dochody wszystkich gospodarstw domowych.
+
+::: panel-tabset
+## base R
+
+```{r}
+aggregate(cbind(wydatki,dochod) ~ 1 , data = dane, FUN = mean)
+```
+
+## dplyr
+
+```{r}
+dane |> 
+  summarise(wydatki = mean(wydatki, na.rm=T),
+            dochpd = mean(dochod, na.rm=T))
+```
+:::
+
+#### Zadanie 22. Oblicz średnią, min, max, odchylenie standardowe oraz medianę wydatków.
+
+::: panel-tabset
+## base R
+
+```{r}
+aggregate(wydatki ~ 1, dane , 
+          FUN = function(x) c(mean=mean(x), min=min(x),max=max(x),sd=sd(x),med=median(x))) |> 
+  unlist()
+```
+
+## dplyr
+
+```{r}
+dane |> 
+  summarise_at(vars(wydatki), list(mean=mean,min=min, max=max, sd=sd, med=median), na.rm=T)
+```
+:::
+
+#### Zadanie 23. Oblicz średnie wydatki w ramach klasy miejscowości.
+
+::: panel-tabset
+## base R
+
+```{r}
+aggregate(wydatki ~ klm, dane, mean)
+```
+
+## dplyr
+
+```{r}
+dane |> 
+  group_by(klm) |> 
+  summarise(m = mean(wydatki, na.rm=T))
+```
+:::
+
+#### Zadanie 24. Stwórz wykres słupkowy z liczebnościami dla klasy miejscowości.
+
+::: panel-tabset
+## base R
+
+```{r}
+table(dane$klm) |> barplot()
+```
+
+## dplyr
+
+Należy użyć funkcji z base R.
+:::
+
+#### Zadanie 25. Posortuj rosnąco zbiór gospodarstw domowych ze względu na wydatki \[tu skończyłem\]
+
+::: panel-tabset
+## base R
+
+```{r}
+
+```
+
+## dplyr
+
+```{r}
+
+```
+:::
+
+#### Zadanie 26. Posortuj malejąco zbiór gospodarstw domowych ze względu na dochody.
+
+::: panel-tabset
+## base R
+
+```{r}
+
+```
+
+## dplyr
+
+```{r}
+
+```
+:::
+
+#### Zadanie 27. Posortuj malejąco kod klasy miejscowości a w ramach tej klasy rosnąco wydatki.
+
+::: panel-tabset
+## base R
+
+```{r}
+
+```
+
+## dplyr
+
+```{r}
+
+```
+:::
+
+#### Zadanie 28. Zrób wykres pudełkowy powierzchni mieszkań (zmienna d36) według klasy miejscowości.
+
+::: panel-tabset
+## base R
+
+```{r}
+
+```
+
+## dplyr
+
+```{r}
+
+```
+:::
+
+#### Zadanie 29. Zrób wykres pudełkowy powierzchni mieszkań według źródła utrzymania dla gospodarstw z województwa mazowieckiego.
+
+::: panel-tabset
+## base R
+
+```{r}
+
+```
+
+## dplyr
+
+```{r}
+
+```
+:::
+
+#### Zadanie 30. Utwórz zbiór wlkp. W zbiorze tym powinny się znaleźć gospodarstwa z województwa wielkopolskiego, których dochód jest z przedziału 2500--3000 zł. Dochód powinien być posortowany malejąco. Oprócz dochodu mają się znaleźć 4 inne zmienne: klm, woj, zut i wydg. Na tym zbiorze, dla zmiennych dochg i wydg, stwórz korelacyjny diagram rozrzutu.
+
+::: panel-tabset
+## base R
+
+```{r}
+
+```
+
+## dplyr
+
+```{r}
+
+```
+:::
+
+#### Zadanie 31. Utwórz dwie nowe zmienne różnica=dochg-wydg oraz doch os=dochg/los i pozostaw je jako jedyne w zbiorze danych.
+
+::: panel-tabset
+## base R
+
+```{r}
+
+```
+
+## dplyr
+
+```{r}
+
+```
+:::
+
+#### Zadanie 32. Utwórz nową zmienną „klasa", która przyjmuje dwie wartości: „wieś", gdy gospodarstwo jest ze wsi oraz „miasto", gdy gospodarstwo jest z miasta.
+
+::: panel-tabset
+## base R
+
+```{r}
+
+```
+
+## dplyr
+
+```{r}
+
+```
+:::
+
+#### Zadanie 33. Utwórz nową zmienną „pow", która przyjmuje trzy warianty: „do 60", „(60-100\>" oraz „powyżej 100" w zależności od wartości zmiennej d36 (powierzchnia mieszkań).
+
+::: panel-tabset
+## base R
+
+```{r}
+
+```
+
+## dplyr
+
+```{r}
+
+```
+:::
