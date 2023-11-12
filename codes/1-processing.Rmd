@@ -152,4 +152,130 @@ subset(rent,
        c("ad_title", "price"))
 ```
 
+Tworzymy nowe kolumny
+
+```{r}
+rent$cena_m2 <- rent$price/ rent$flat_area
+rent[,"cena_m2"] <- rent$price/ rent$flat_area
+rent[["cena_m2"]] <- rent$price/ rent$flat_area
+```
+
+
+```{r}
+rent$centrum <- with(rent, quarter == "Centrum")
+rent <- transform(rent, rataje = quarter == "Rataje")
+head(rent)
+```
+
+Ćwiczenie:
+
+Utworzyć kolumny z funkcją transform
+
+price_log - logartym naturalny ceny
+area_log - logarytm naturalny powierzchni
+kawalerka - jeżeli w tytule ogłoszenia jest słowo kawalerka
+
+```{r}
+rent <- transform(rent ,
+                  price_log = log(price),
+                  area_log = log(flat_area),
+                  kawalerka = grepl("kawalerka", ad_title, ignore.case = TRUE))
+```
+
+
+Tworzymy nową kolumnę z funkcją ifelse
+
+```{r}
+rent$price_tanie_drogie <- 
+  with(rent, ifelse(price < 500 | price > 15000, "tanie-drogie", "inne"))
+
+head(rent[, c("price", "price_tanie_drogie")], n=50)
+```
+
+Tworzymy przedziały dla powierzchni z funkcją cut
+
+```{r}
+rent$flat_area_cut <- cut(rent$flat_area,
+                          breaks = c(0, 10, 20, 30, Inf),
+                          labels = c("(0, 10]", "(10, 20]", "(20, 30]", "30+"),
+                          right = TRUE)
+
+head(rent[, c("flat_area", "flat_area_cut")])
+
+table(rent$flat_area_cut)
+```
+
+Agregujemy dane
+
+1. funkcja table
+
+```{r}
+table(rent$flat_rooms)
+prop.table(table(rent$flat_rooms))*100
+barplot(table(rent$flat_rooms))
+```
+Tablica krzyżowa z funkcją table i xtabs
+
+```{r}
+table(rent$flat_rooms, rent$flat_for_students) 
+
+tab1 <- with(rent, table(flat_rooms, flat_for_students))
+
+prop.table(tab1)*100
+prop.table(tab1, margin = 2)*100
+```
+```{r}
+xtabs( ~ flat_rooms + flat_for_students, data=rent)
+```
+Funkcja summary do podsumowania zbioru lub zmiennej
+
+```{r}
+summary(rent)
+summary(rent$price)
+```
+Wyznaczam średnią cenę i powierzchnię
+
+```{r}
+apply(rent[, c("price", "flat_area")], 2, mean)
+
+sapply(rent[, c("price", "flat_area")], mean)
+
+lapply(rent[, c("price", "flat_area")], mean)
+```
+Wyznaczam średnią cenę według dzielnicy
+
+```{r}
+aggregate(price ~ quarter, data = rent, FUN = mean)
+
+aggregate(cbind(price, flat_area) ~ quarter, data = rent, FUN = mean)
+
+aggregate(cbind(cena=price, pow=flat_area) ~ quarter, data = rent, FUN = mean)
+
+aggregate(cbind(cena=price, pow=flat_area) ~ quarter + flat_for_students, 
+          data = rent, FUN = mean)
+
+
+```
+
+Ćwiczenie:
+
+-  mediana ceny i powierzchni według liczby pokoi wyłącznie dla mieszkań dla studentów (hint: pomoc do funkcji aggregate)
+
+```{r}
+res <- aggregate(cbind(cena=price, pow=flat_area) ~ flat_rooms, 
+                 data = rent,
+                 FUN = median, 
+                 subset = flat_for_students == TRUE)
+
+res <- aggregate(cbind(cena=price, pow=flat_area) ~ flat_rooms, 
+                 data = subset(rent, flat_for_students == TRUE),
+                 FUN = median)
+```
+```{r}
+res
+```
+
+
+
+
 

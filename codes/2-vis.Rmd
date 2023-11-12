@@ -1,0 +1,64 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(readxl)
+```
+
+```{r}
+rent <- read_excel(path = "../data-raw/rent-poznan.xlsx")
+rent <- as.data.frame(rent)
+head(rent)
+```
+
+
+Tworzymy histogram ceny
+
+```{r}
+hist(rent$price)
+hist(rent$price, breaks = "fd")
+hist(rent$price, breaks = "scott")
+```
+
+```{r}
+hist(rent$flat_area)
+hist(rent$flat_area, breaks = "fd")
+hist(rent$flat_area, breaks = "scott")
+```
+
+Tworzymy podzbiór zawierający wyłącznie kawalerki
+
+```{r}
+kawalerki <- subset(rent, flat_rooms == 1)
+hist(kawalerki$price)
+hist(kawalerki$price, breaks = "fd")
+```
+
+Sprawdzam czy jest różnica w rozkładzie cen kawalerek dla studnetów i pozostałych
+
+```{r}
+boxplot(price ~ flat_for_students, data=kawalerki)
+boxplot(price ~ quarter, data=kawalerki)
+```
+
+Tworzymy wykres słupkowy
+
+```{r}
+barplot(table(kawalerki$flat_for_students))
+barplot(table(kawalerki$flat_area))
+```
+
+
+Badamy zależność między powierzchnią a ceną
+
+```{r}
+plot(kawalerki$flat_area, kawalerki$price,
+     xlim = c(0, 70),
+     ylim = c(0, 4000),
+     xlab = "Powierzchnia",
+     ylab = "Cena",
+     main = "Zależność między powierzchnią i ceną")
+```
+

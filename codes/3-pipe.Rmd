@@ -1,0 +1,47 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Aby wstawić operator ("pipe") należy użyć skrótu: ctrl + shift + m
+
+
+```{r}
+sqrt(log(1:10))
+```
+
+```{r}
+1:10 |> 
+  log() |> 
+  sqrt()
+```
+
+```{r}
+subset(rent, flat_area < 50)
+```
+
+```{r}
+rent |> 
+  subset(flat_area < 50) |> 
+  subset(flat_area > 20) |> 
+  subset(flat_rooms == 1) |> 
+  aggregate(price ~ quarter, data = _, FUN= mean)
+```
+
+Modyfikacja 1: dodajcie subset po dzielcy: Rataje lub Wynogrady
+Modyfikacja 2: dodajcie nową kolumnę pricem2 = price / flat_area
+Modyfikacja 3: dodajcie pricem2 do aggregate
+
+
+```{r}
+rent |> 
+  subset(flat_area < 50) |> 
+  subset(flat_area > 20) |> 
+  subset(flat_rooms == 1) |> 
+  subset(quarter %in% c("Rataje", "Winogrady")) |> 
+  transform(pricem2 = price / flat_area) |> 
+  aggregate(cbind(price, pricem2) ~ quarter, data = _, FUN= mean)
+```
+
+
+

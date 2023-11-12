@@ -1,0 +1,80 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+install.packages("tidyverse") ## instalacja pakietu
+```
+
+```{r}
+library(tidyverse)
+library(readxl)
+```
+
+```{r}
+rent <- read_excel(path = "../data-raw/rent-poznan.xlsx")
+rent <- as.data.frame(rent)
+head(rent)
+```
+Wybieramy kolumny z funkcją select z pakietu dplyr.
+
+```{r}
+rent |> select(id, price, flat_area)
+rent |> select(1, 5, 10)
+rent |> select(1, 5, price)
+rent |> select(cena=price, pow=flat_area)
+rent |> select(starts_with("p"), ends_with("id"), flat_for_students)
+rent |> select(price:flat_for_students, -flat_rooms, -flat_build_year)
+rent |> select(contains("ri")) 
+rent |> select_if(is.character)
+```
+
+1. wybrać kolumny, które mają w nazwie "ad" 
+
+```{r}
+rent |> select(contains("ad"))
+```
+
+2. wybrać kolumny od flat_heating do flat_balcony bez kolumny ad_promo
+
+
+```{r}
+rent |> select(flat_heating:flat_balcony, -ad_promo)
+```
+
+Wybieramy wiersze z funkcją filter
+
+```{r}
+rent |> filter(price < 500)
+rent |> filter(price < 500 & flat_rooms == 1)
+rent |> filter(price < 500, flat_rooms == 1)
+rent |> filter(price > 5000 | price < 200)
+
+rent |> filter(between(price, 1000, 1200)) ## to i to poniżej jest tym samym
+rent |> filter(price >= 1000, price <= 1200)
+
+rent |> filter(price < mean(price))
+
+rent |> filter(price < mean(price), .by = individual)
+```
+
+Zadania: wybranie wierszy po dzielcy: Rataje lub Winogrady
+
+```{r}
+rent |> filter(quarter %in% c("Rataje", "Winogrady"))
+```
+
+Wstawianie nowych kolumn z funkcją mutate (transmute)
+
+```{r}
+rent |> mutate(pricem2 = price/flat_area,
+               pricem2_log = log(pricem2))
+
+rent |> mutate(pricem2_gr = mean(price), .by = quarter)
+
+rent |> mutate_at(vars(price, flat_area), log)
+rent |> mutate_if(is.logical, as.numeric)
+```
+
+
