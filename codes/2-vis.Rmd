@@ -62,3 +62,10 @@ plot(kawalerki$flat_area, kawalerki$price,
      main = "Zależność między powierzchnią i ceną")
 ```
 
+```{r}
+rent <- read_excel(path = "../data-raw/rent-poznan.xlsx")
+rent <- as.data.frame(rent)
+head(rent)
+```
+
+

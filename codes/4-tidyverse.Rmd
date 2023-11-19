@@ -3,7 +3,7 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-```{r}
+```{r eval = FALSE}
 install.packages("tidyverse") ## instalacja pakietu
 ```
 
@@ -76,5 +76,139 @@ rent |> mutate(pricem2_gr = mean(price), .by = quarter)
 rent |> mutate_at(vars(price, flat_area), log)
 rent |> mutate_if(is.logical, as.numeric)
 ```
+Podsumowujemy zbiór danych z funkcją summarize/se
+
+```{r}
+rent |> summarise(m=mean(price), med=median(price), n=n())
+```
+
+Wyznaczam odsetek ogłoszeń z określonymi charakterystykami (np. odsetek ogł. z alarmami).
+
+```{r}
+rent |> summarise_if(is.logical, mean)
+rent |> summarise_if(is.numeric, median)
+rent |> summarise_if(is.numeric, median, na.rm = TRUE)
+
+rent |> filter(is.na(flat_floor_no)) ## is.na (czy jest brak danych)
+
+```
+
+Podsumujemy wybrane kolumny z funkcją summarise_at
+
+```{r}
+rent |> 
+  summarise_at(vars(price, flat_area, flat_rent, flat_deposit),
+               mean)
+
+rent |> 
+  summarise_at(
+    vars(price, flat_area, flat_rent, flat_deposit),
+    list(sr=mean, med=median)
+               )
+
+rent |> 
+  summarise_at(vars(flat_balcony, flat_basement),
+               list(srednia=mean))
+```
+Na wszystkich kolumnach wyznaczam określone statystyki opisowe
+
+```{r}
+rent |> 
+  select(price, flat_area, flat_rent, flat_deposit) |> 
+  summarise_all(mean)
+
+rent |> 
+  select(price, flat_area, flat_rent, flat_deposit) |> 
+  summarise_all(list(s=mean, m=median))
+
+rent |> 
+  select(price, flat_area, flat_rent, flat_deposit) |> 
+  summarise_all(list(s=mean, m=median, n=length))
+```
+Ćwiczenie:
+
+- ogranicznych zbiór danych do cen z przedziału [700, 15000]
+- ograniczyć zbiór danych do powierszchni z przedziału [15, 150]
+- wyznaczyć cenę m2
+- podsumować cenę, powierzchnię i cenę m2 uzywając średniej i mediany
+
+```{r}
+rent |> 
+  filter(between(price, 700,15000), 
+         between(flat_area, 15, 150)) |> 
+  mutate(pricem2 = price/flat_area) |> 
+  summarise_at(vars(price, flat_area, pricem2), list(s=mean, m=median))
+```
+
+`
+Wyznaczamy średnią i medianę ceny według liczby pokoi
+
+```{r}
+rent |> 
+  group_by(flat_rooms) |> 
+  summarise_at(vars(price), list(s=mean, m=median, n = length))
+
+rent |> 
+  group_by(pokoje=flat_rooms, flat_for_students) |> 
+  summarise_at(vars(price), list(s=mean, m=median, n = length)) |> 
+  ungroup() |> 
+  mutate(n_total = sum(n),
+         p = n/sum(n)*100)
+
+```
+
+Wyznaczcie liczbę ogłoszeń według następujących zmiennych:
+
++ flat_for_students
++ individual
++ flat_balcony
+
+```{r}
+rent |> 
+  group_by(flat_for_students, individual, flat_balcony) |> 
+  summarise(n = n()) |> 
+  ungroup() |> 
+  mutate(total = sum(n))
+
+rent |> 
+  count(flat_for_students, individual, flat_balcony)
+```
+
+Dodajemy do zbioru danych  średnią artymetyczną według liczby pokoi
+
+```{r}
+
+rent |> 
+  group_by(flat_rooms) |> 
+  mutate(price_rooms = mean(price)) |> 
+  
+  group_by(flat_rooms, flat_for_students) |>
+  mutate(price_rooms2 = mean(price)) |> 
+  
+  select(price, flat_rooms, price_rooms2)
+```
+
+Zadanie:
+
+- ogranicznych zbiór danych do cen z przedziału [700, 15000]
+- ograniczyć zbiór danych do powierszchni z przedziału [15, 150]
+- ograniczyć do mieszkań z Rataj, Naramowic lub Jeżyc
+- wyznaczyć cenę m2
+- zgrupować według quarter
+- podsumować cenę, powierzchnię i cenę m2 uzywając średniej i mediany
+
+```{r}
+rent |> 
+  filter(between(price, 700,15000), 
+         between(flat_area, 15, 150),
+         quarter %in% c("Rataje", "Naramowice", "Jeżyce")) |> 
+  mutate(pricem2 = price/flat_area) |> 
+  group_by(quarter) |> 
+  summarise_at(vars(price, flat_area, pricem2), list(s=mean, m=median)) |> 
+  arrange(price_s) |> 
+  rename(cena = price_s)
+```
+
+
 
 
